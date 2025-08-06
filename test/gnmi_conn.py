@@ -9,26 +9,30 @@ TARGET_PASS = "admin"
 # ------------------------------------
 
 async def check_device():
-    print(f"--- {TARGET_HOST}への接続テストを開始 ---")
+    """指定した機器にgNMIで接続できるか試す"""
+    print(f"--- {TARGET_HOST}への接続テストを開始します ---")
+
     # 接続情報を作成
     target = (TARGET_HOST, TARGET_PORT)
+
     try:
-        # gNMIクライアントを作成して接続を試みる
-        async with gNMIclient(target=target,
+        # gNMIクライアントの部品を作成
+        client = gNMIclient(target=target,
                               username=TARGET_USER,
                               password=TARGET_PASS,
-                              insecure=True) as client:
+                              insecure=True)
 
-            # Capabilitiesリクエストを送信（接続確認に最適）
-            response = await client.capabilities()
+        # client部品を使って、capabilities()という機能をお願いする
+        # この瞬間に接続とリクエストが行われます
+        response = await client.capabilities()
 
-            print("✅ 接続成功！")
-            print(f"gNMIバージョン: {response.gNMI_version}")
+        print("✅ 接続成功！")
+        print(f"gNMIバージョン: {response.gNMI_version}")
 
     except Exception as e:
         # 接続に失敗した場合
-        print(f"接続失敗")
-        print(f"{e}")
+        print(f"❌ 接続失敗...")
+        print(f"エラー内容: {e}")
 
 # --- プログラムの実行 ---
 if __name__ == "__main__":

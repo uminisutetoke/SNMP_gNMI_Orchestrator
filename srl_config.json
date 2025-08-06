@@ -1,0 +1,15 @@
+{
+  "system": {
+    "snmp": {
+      "admin-state": "enable",
+      "community": [
+        {
+          "name": "public"
+        }
+      ]
+    },
+    "gnmi-server": {
+      "admin-state": "enable"
+    }
+  }
+}
