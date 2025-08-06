@@ -4,6 +4,9 @@ topology:
     srl1:
       kind: nokia_srlinux
       image: ghcr.io/nokia/srlinux # 以前成功したバージョン
+      ports:
+      - 57400:57400
+      memory: 8G
       startup-config: srl_config.json # 作成したJSONファイルを指定
 
     snmp-collector:
