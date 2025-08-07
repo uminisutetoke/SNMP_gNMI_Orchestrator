@@ -1,17 +1,18 @@
 import subprocess
 from pygnmi.client import gNMIclient
 from pysnmp.hlapi import *
+import grpc
 
 class ProtocolCheck:
     def __init__(self, targets):
-        self.targets: list = targets
+        self.targets: list = targets #いくつかのdictの入ったlist
         self.inventory: dict = {} # チェック結果をここに保存
 
     def run(self):
         for t in self.targets:
             if not self.snmp_available(t):
                 self.inventory["unknown"] = t
-                break
+                continue
             if self.insecure_device(t):
                 b = self.gnmi_available(57401)
             else:
@@ -30,8 +31,12 @@ class ProtocolCheck:
             insecure=True,
             skip_verify=True
             ) as gc:
-            print(gc.capabilities())
-            return True#gc.capabilities()
+            try:
+                gc.capabilities()
+            except grpc.FutureTimeoutError as e:
+                print(e)
+                return False
+            return True
     def snmp_available(self, target):
         return True
     def insecure_device(self, target):

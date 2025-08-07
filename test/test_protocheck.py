@@ -20,9 +20,13 @@ def test_gnmi_available():
     p = ProtocolCheck(test_targets)
     p.targets = test_targets[0]
     assert True == p.gnmi_available(57401)
+    assert False == p.gnmi_available(57400)
 
 def test_snmp_available():
     pass
+    #p = ProtocolCheck(test_targets)
+    #p.targets = test_targets[0]
+
 
 def test_insecure_device():
     pass
