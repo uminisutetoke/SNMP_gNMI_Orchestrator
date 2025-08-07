@@ -4,8 +4,8 @@ from pysnmp.hlapi import *
 
 class ProtocolCheck:
     def __init__(self, targets):
-        self.targets = targets
-        self.inventory = {} # チェック結果をここに保存
+        self.targets: list = targets
+        self.inventory: dict = {} # チェック結果をここに保存
 
     def run(self):
         for t in self.targets:
@@ -13,19 +13,19 @@ class ProtocolCheck:
                 self.inventory["unknown"] = t
                 break
             if self.insecure_device(t):
-                b = self.gnmi_available(t, 57401)
+                b = self.gnmi_available(57401)
             else:
-                b = self.gnmi_available(t, 57400)
+                b = self.gnmi_available(57400)
             if b:
                 self.inventory["available"] = t
             else:
                 self.inventory["unavailable"] = t
 
-    def gnmi_available(self, target, port):
+    def gnmi_available(self, port):
         with gNMIclient(
-            target=(target["ip_address"], port),
-            username=target["username"],
-            password=target["password"],
+            target=(self.targets["ip_address"], port),
+            username=self.targets["username"],
+            password=self.targets["password"],
             #skip_verify=int(str(port)[::-1][0]),
             insecure=True,
             skip_verify=True
