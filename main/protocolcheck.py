@@ -26,12 +26,13 @@ class ProtocolCheck:
             target=(target["ip_address"], port),
             username=target["username"],
             password=target["password"],
-            skip_verify=int(str(port)[::-1][0]),
+            #skip_verify=int(str(port)[::-1][0]),
+            insecure=True,
+            skip_verify=True
             ) as gc:
             print(gc.capabilities())
-            return gc.capabilities()
+            return True#gc.capabilities()
     def snmp_available(self, target):
         return True
     def insecure_device(self, target):
         return True
-
