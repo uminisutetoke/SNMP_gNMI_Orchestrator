@@ -5,7 +5,7 @@ import pgw_pb2_grpc
 
 def run():
     # サーバーへの接続を作成（今回はローカルホストの50051番ポート）
-    with grpc.insecure_channel('localhost:50051') as channel:
+    with grpc.insecure_channel('172.20.20.2:50051') as channel:
         # サーバーと通信するための「スタブ」を作成
         stub = pgw_pb2_grpc.SNMPStub(channel)
 
